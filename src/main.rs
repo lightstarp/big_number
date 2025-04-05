@@ -24,6 +24,14 @@
 use std::{backtrace, io};
 
 #[derive(Clone, Debug)]
+struct SimpleNumber {
+    value: u64,
+}
+
+impl SimpleNumber {
+}
+
+#[derive(Clone, Debug)]
 struct BigNum {
     mantissa: u64,
     power: u64,
