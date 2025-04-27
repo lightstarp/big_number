@@ -9,6 +9,74 @@
 100
 
 
+
+F128
++--------+
+|i64     |
+|mantissa|
++--------+
+|i64     |
+|power   |
++--------+
+
+F128::add
+[power near]---->cast big
+     |       NO
+     | YES
+     v
+ power fix
+     |
+     |
+     v
+add mantissa
+
+F128::mul
+pow = a_p + b_p
+man = a_m * b_m
+
+F128::pow
+[b_p small]---->Error
+     |       NO
+     | YES
+     v
+pow_pow = b_p
+pow_man = a_p * b_m
+man     = a_m
+
+F128::e_next
+pow = b_p
+man = a_p * b_m + log_10 a_m
+
+F128::shift
+pow = a_p + shift
+man = a_m / shift
+
+
+pow_pow = b_p
+pow_man = a_p * b_m
+man     = log_10 a_m
+
+F128::arr
+pow_pow = b_p
+pow_man = a_p * b_m
+man     = log_10 a_m
+
+
+MultiFloat
++----------+    
+|F128      |
+|+--------+|
+||i64     ||
+||mantissa||
+|+--------+|
+||i64     ||
+||power   ||
+|+--------+|
++----------+
+| u64      |
+| e_count  |
++----------+
+
 |0000|0000|0000|01100100    shift
 |0000|0000|0000|1100100     shift
 |0000|0000|0001|100100      shift
@@ -21,98 +89,45 @@
 
 */
 
-use std::{backtrace, io};
-
-#[derive(Clone, Debug)]
-struct SimpleNumber {
-    value: u64,
-}
-
-impl SimpleNumber {
-}
-
-#[derive(Clone, Debug)]
-struct BigNum {
-    mantissa: u64,
-    power: u64,
-    e_count: u64,
-}
-
-impl BigNum {
-    fn string(&self) -> String {
-        format!("{:20}x{}",self.mantissa,self.power)
-    }
-    fn format(&self) -> String {
-        //3.5269E11         log_2 ,10
-        //0.4D104D2A2A4B04  log_10,2
-        //0.4D104D427DE7FC1
-        //  .   .   .   .
-        let step1   : u32   = self.mantissa.ilog2();
-        let step2   : u128  = (step1 as u128 + self.power as u128) * 0x04D104D427DE7FC1;
-        let power   : u64   = (step2 >> 64) as u64;
-        let mantissa: u64   = (step2      ) as u64;
-        //step4
-        format!("{:20}e{}",self.mantissa,self.power)
-    }
-    fn set(&mut self, num: u64) {
-        *self = BigNum {
-            mantissa: num,
-            power: 0,
-            e_count: 0
-        };
-    }
-    fn add(&mut self,number: &BigNum) {
-        self.mantissa = self.mantissa + number.mantissa;
-    }
-    fn mul(&mut self,number: &BigNum) {
-        self.power     = self.power            + number.power;
-        let mut result = self.mantissa as u128 * number.mantissa as u128;
-        {
-            let mut count = 0;
-            let mut digit = 1;
-            for i in 0..48 {
-                if result <= digit * 10000000000000000 {
-                    result = result / digit;
-                    self.power = self.power + count;
-                    break;
-                };
-                count = count + 1;
-                digit = digit * 10;
-            }
-        }
-
-        self.mantissa = result as u64;
-
-        /*
-        let zero_count = result.leading_zeros();
-        let shift_count = if zero_count < 64 {
-            64 - zero_count
-        } 
-        else {
-            0
-        };
-
-        self.mantissa = (result >> shift_count) as u64;
-        self.power = self.power + number.power + shift_count as u64;
-        */
-    }
-}
-
-fn build_bignum() -> BigNum {
-    BigNum {
-        mantissa: 0,
-        power: 0,
-        e_count: 0
-    }
-}
-
-fn get_input() -> String {
-    let mut word = String::new();
-    io::stdin().read_line(&mut word).ok();
-    return word.trim().to_string();
-}
+mod long;
 
 fn main() {
+    long::vec::test();
+    /*
+    let now = time::Instant::now();
+
+    for j in 0..100 {
+        for _i in 0..100 {
+            let mut number: i8 = j;
+            number = number / 17;
+        };
+    };
+    println!("u8  {:?}", now.elapsed());
+
+    for j in 0..100 {
+        for _i in 0..100 {
+            let mut number: i16 = j;
+            number = number / 17;
+        };
+    };
+    println!("u16 {:?}", now.elapsed());
+
+    for j in 0..100 {
+        for _i in 0..100 {
+            let mut number: f32 = j as f32;
+            number = number / 27.33713477766;
+        };
+    };
+    println!("u32 {:?}", now.elapsed());
+
+    for j in 0..100 {
+        for _i in 0..100 {
+            let mut number: f64 = j as f64;
+            number = number / 27.33713466666;
+        };
+    };
+    println!("u64 {:?}", now.elapsed());
+    */
     /*
     let mut a: u64 = 1;
     println!("{}",format!("{:b}",a));
@@ -122,13 +137,4 @@ fn main() {
         println!("{}",format!("{:b}",a));
     }
         */
-
-    let mut a: BigNum = build_bignum();
-    a.set(1);
-    let mut b: BigNum = build_bignum();
-    b.set(2);
-    for i in 0..128 {
-        a.mul(&b);
-        println!("{}",a.format());
-    }
 }
