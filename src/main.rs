@@ -6,7 +6,7 @@ fn main() {
 }
 
 fn example1() {
-    /*2^256を求めて出力する関数*/
+    /*2^1024を求めて出力する関数*/
     let mut result   = long::create_set(1);
     let     multiple = long::create_set(2);
     for _i in 0..1024 {
