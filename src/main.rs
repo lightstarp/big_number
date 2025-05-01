@@ -92,49 +92,25 @@ MultiFloat
 mod long;
 
 fn main() {
-    long::vec::test();
-    /*
-    let now = time::Instant::now();
+    let mut a = long::create_set(1);
+    let mut b = long::create_set(2);
 
-    for j in 0..100 {
-        for _i in 0..100 {
-            let mut number: i8 = j;
-            number = number / 17;
-        };
-    };
-    println!("u8  {:?}", now.elapsed());
-
-    for j in 0..100 {
-        for _i in 0..100 {
-            let mut number: i16 = j;
-            number = number / 17;
-        };
-    };
-    println!("u16 {:?}", now.elapsed());
-
-    for j in 0..100 {
-        for _i in 0..100 {
-            let mut number: f32 = j as f32;
-            number = number / 27.33713477766;
-        };
-    };
-    println!("u32 {:?}", now.elapsed());
-
-    for j in 0..100 {
-        for _i in 0..100 {
-            let mut number: f64 = j as f64;
-            number = number / 27.33713466666;
-        };
-    };
-    println!("u64 {:?}", now.elapsed());
-    */
-    /*
-    let mut a: u64 = 1;
-    println!("{}",format!("{:b}",a));
-    for i in 0..8 {
-        a *= 10;
-        println!("{}",format!("{}",a));
-        println!("{}",format!("{:b}",a));
+    let mut now = std::time::Instant::now();
+    println!("{}",a.to_string());
+    for _i in 0..300 {
+        a = long::mul(&a,&b);
+        println!("{}",a.to_string());
     }
-        */
+}
+
+fn example1() {
+
+}
+
+fn example2() {
+    
+}
+
+fn example3() {
+    
 }
