@@ -104,11 +104,25 @@ fn main() {
 }
 
 fn example1() {
-
+    /*2^256を求めて出力する関数*/
+    let mut a = long::create_set(1);
+    let b     = long::create_set(2);
+    for _i in 0..256 {
+        a = long::mul(&a,&b);
+    }
+    println!("Example1:");
+    println!("{}",a.to_string());
 }
 
 fn example2() {
-    
+    /*2^256を求めて出力する関数*/
+    let mut a = long::create_set(1);
+    let b     = long::create_set(2);
+    for _i in 0..256 {
+        a = long::add(&a,&b);
+    }
+    println!("Example2:");
+    println!("{}",a.to_string());
 }
 
 fn example3() {
