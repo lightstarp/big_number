@@ -8,6 +8,7 @@ mod to_string16;
 mod add;
 mod sub;
 mod mul;
+mod div;
 
 pub use self::create::create;
 pub use self::create_set::create_set;
