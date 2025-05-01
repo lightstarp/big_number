@@ -2,7 +2,6 @@ use super::Uvec;
 
 pub fn add(a: &Uvec,b: &Uvec) -> Uvec {
     let len = std::cmp::max(a.unit.len(), b.unit.len());
-
     let mut val: u128 = 0;
     let mut carry: u128 = 0;
     let mut result: Uvec = Uvec{ unit: vec![0; len] };
@@ -12,11 +11,9 @@ pub fn add(a: &Uvec,b: &Uvec) -> Uvec {
             + carry;
         result.unit[i] = val as u64;
         carry = val >> 64;
-
     }
     if carry != 0 {
         result.unit.push(val as u64);
     }
-    
     result
 }
