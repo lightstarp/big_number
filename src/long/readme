@@ -20,6 +20,8 @@ mul         *   掛け算
 div             割り算
 pow             乗算
 rem             余剰
+shr             右シフト
+shl             左シフト
 push        *   数を末尾に入れる
 pop         *   数を末尾から取り出す
 or              論理和
