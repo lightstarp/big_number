@@ -43,7 +43,7 @@ fn example3() {
     result.shl(16);
 
     println!("Example3: bitshift is");
-    println!("{}",number.to_string2());
-    println!("{}",result.to_string2());
+    println!("{}",number.to_string16());
+    println!("{}",result.to_string16());
     println!("");
 }
