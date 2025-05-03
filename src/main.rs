@@ -38,9 +38,11 @@ fn example3() {
     number.push(123456789);
     number.push(987654321);
     number.push(333333333);
+    number.push(987654321);
+    number.push(333333333);
 
     let mut result = number.clone();
-    result.shl(16);
+    result.shr(64);
 
     println!("Example3: bitshift is");
     println!("{}",number.to_string16());
